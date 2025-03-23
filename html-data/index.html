@@ -3,11 +3,12 @@
 	<head>
 		<style>
 		    body {
-			background-color: lightblue;
+			background-color: black;
 			color:white;
 			background-image:url('https://images.unsplash.com/photo-1496715976403-7e36dc43f17b?q=80&w=2848&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
 			background-size:cover;
-		    }
+
+			}
 		     /* unvisited link */
 			      a:link {
 				color:lightblue;
@@ -30,11 +31,11 @@
 	<body>
 		<h1>Lucy Yang</h1>
 		<h2>Creativity thrives in uncertainty.</h2>
-		<a href="https://github.com/livles" title="Lucy Yang's Github Page" target="_top"><src img="<">Link to my github.</a>
+		<a href="https://github.com/livles" title="Lucy Yang's Github Page" target="_top"><src img="<">Link to my Github.</a>
 		<br>
 		<img src="https://i.pinimg.com/736x/29/c8/87/29c8873b70959a8ce07d0034f85d2af8.jpg" style="text-align:center">
 		<p>Recommendations<br>
-		<a href="leisure/books.html" target="_parent">My book recommendations</a>
+		<a href="leisure/books.html" target="_parent">My Book Recommendations</a>
 		</p>
 		<!---
 		<script>
@@ -44,6 +45,19 @@
 					pic = "
 		-->
 								
-		<img src="https://raw.githubusercontent.com/livles/art/refs/heads/main/light%20bulb%20lighter.png" width=100px >
+	<img id="light_bulb" onclick="changeImage()" src="https://raw.githubusercontent.com/livles/art/refs/heads/main/light_bulb_on.png" width=400px >
+		<script>
+			function changeImage() {
+				var image = document.getElementById("light_bulb");
+				if (image.src.match("bulb_on")) {
+					image.src = "https://raw.githubusercontent.com/livles/art/refs/heads/main/light_bulb_off.png";
+					document.body.style.backgroundImage = 'url("https://images.unsplash.com/photo-1518818419601-72c8673f5852?q=80&w=3870&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D")';
+
+				} else {
+					image.src ="https://raw.githubusercontent.com/livles/art/refs/heads/main/light_bulb_on.png";
+					document.body.style.backgroundImage = 'url("https://images.unsplash.com/photo-1496715976403-7e36dc43f17b?q=80&w=2848&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D")';
+				}
+			}
+		</script>
 	</body>
 </html>
