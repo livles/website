@@ -2,7 +2,8 @@ import * as THREE from 'https://cdn.skypack.dev/three@0.129.0/build/three.module
 import { GLTFLoader } from 'https://cdn.skypack.dev/three@0.129.0/examples/jsm/loaders/GLTFLoader.js';
 import {OrbitControls} from 'https://cdn.skypack.dev/three@0.129.0/examples/jsm/controls/OrbitControls.js';
 
-const renderer = new THREE.WebGLRenderer({alpha:false, antialias: true});
+const canvas = document.getElementById("experience-canvas");
+const renderer = new THREE.WebGLRenderer({canvas: canvas,alpha:false, antialias: true});
 renderer.setSize(window.innerWidth,window.innerHeight);
 renderer.toneMapping = THREE.ACESFilmicToneMapping;
 renderer.setPixelRatio( window.devicePixelRatio );
@@ -14,29 +15,28 @@ renderer.outputEncoding = THREE.sRGBEncoding;
 document
 .body
 // .getElementById('container3D')
+// .getElementById('experience')
 .appendChild(renderer.domElement);
 
-const camera = new THREE.PerspectiveCamera(75,window.innerWidth / window.innerHeight,0.1,1000);
-camera.position.set(-13, 10, 13);
+const camera = new THREE.PerspectiveCamera(15,window.innerWidth / window.innerHeight,0.1,1000);
+camera.position.set(-30, 0, 30);
 
 const scene = new THREE.Scene();
-scene.background = new THREE.Color( 0x404040 );
+// scene.background = new THREE.Color( 0x404040 );
 scene.castShadow = true;
 const animate = () => {
-    requestAnimationFrame(animate);
+    // requestAnimationFrame(animate);
     controls.update();
     renderer.render(scene, camera);
 };
 
 
 const controls = new OrbitControls(camera, renderer.domElement);
-controls.minDistance = 2;
-controls.maxDistance = 10;
-controls.target.set( 0, 0, - 0.2 );
+controls.enableDamping = true;
 
 
 const loader = new GLTFLoader();
-loader.load('./room.glb',
+loader.load('./room_new.glb',
     function(gltf) {
         console.log("GLTF:", gltf);
         scene.add(gltf.scene);
@@ -81,4 +81,4 @@ function onWindowResize() {
 				animate();
 
 			}
-animate();
+renderer.setAnimationLoop(animate);

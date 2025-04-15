@@ -1,7 +1,7 @@
-#container3D {
+#experience-canvas {
     position:fixed;
-    inset: 0;
-    /* background-color: red; */
-    z-index: 100;
-    pointer-events: none;
+    width: 100%;
+    top: 0;
+    left: 0;
+    /* overflow: hidden; */
 }
