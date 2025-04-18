@@ -15,18 +15,20 @@
     position: absolute;
     top: 0%;
     /* left: 50%; */
-    right: 0;
+    right: 0px;
     /* transform: translate(-50%, -50%); */
     font-size: 32px;
     color: aliceblue;
     z-index: 1;
     background-color: #000000;
-    /* justify-content: right; */
-    /* align-items: flex-end; */
+    justify-content: center;
+    align-items: center;
     height: 100%;
     margin-left: 50%;
     margin-right: 0;
     display: none;
+    width: 50%;
+    overflow: hidden;
 }
 
 .intro.modal{

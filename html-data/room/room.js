@@ -10,7 +10,7 @@ let lighton = true;
 const exposureHigh = -3;
 const exposureLow = -5;
 let modalOpen = 1;
-let camera,scene,controls, intersects;
+let camera,scene,controls, intersects, intersectObject, hoveredObject;
 
 const modals = {
     about:  document.querySelector(".modal.about"),
@@ -89,6 +89,26 @@ function animate (){
     controls.update();
 };
 
+function startHoverAnimation(object) {
+
+    gsap.to(object.scale, {
+        duration: 0.5,
+        x:1.8, y:1.8, z:1.8 ,
+        ease: "back.out(1.8)"
+    });
+
+}
+
+function endHoverAnimation ( object ) {
+    
+    gsap.to(object.scale, {
+        duration: 0.5,
+        x:1, y:1, z:1 ,
+        ease: "back.out(1.8)"
+    });
+ 
+}
+
 function onPointer( event ) {
     
     pointer.x = ( event.clientX / canvas.clientWidth ) * 2 - 1;
@@ -96,10 +116,28 @@ function onPointer( event ) {
     raycaster.setFromCamera( pointer, camera );
     
     if ( scene.children.length > 6 ) {
-        
         intersects = raycaster.intersectObjects( scene.children[6].children );
-        if ( 0 != intersects.length && intersects[0].object.name.includes("Raycaster")) {
-            document.body.style.cursor = "pointer";
+
+        if ( intersects.length ) {
+            intersectObject = intersects[0].object;
+            
+            if ( intersectObject != hoveredObject ) {
+                if ( hoveredObject ) {
+                    endHoverAnimation(hoveredObject);
+                    hoveredObject = null;
+                    
+                }
+                if ( intersectObject.name.includes("Raycaster") ) {
+                    document.body.style.cursor = "pointer";
+                    startHoverAnimation(intersectObject);            
+                    hoveredObject = intersectObject;
+                } else {
+                    document.body.style.cursor = "default";
+                }
+            } else {
+                document.body.style.cursor = "poimter";
+            }
+
         } else {
             document.body.style.cursor = "default";
         }
@@ -110,9 +148,11 @@ function onPointer( event ) {
 
 
 function onWindowResize () {
+    console.log(modalOpen);
     if (modalOpen > 0) {
         console.log(modalOpen);
         canvas.style.width = "50%";
+        canvas.style.overflow ="hidden";
          camera.aspect = canvas.clientWidth / window.innerHeight ;
         camera.updateProjectionMatrix();
         renderer.setSize(window.innerWidth /2 ,window.innerHeight );
@@ -129,29 +169,20 @@ function onWindowResize () {
 
 function setupButtons () {
     
-    // const exit_buttons = 
     document.querySelectorAll( ".exit-modal" )
     .forEach( (button) =>
-        // for (let i = 0; i<exit_buttons.length; i++) {
-    // const button = exit_buttons[i];
     button.addEventListener ( "click" , (e) => {
         const modal = e.target.closest ( ".modal" );
         hideModal(modal);
     })
-    //; }
     )
 }
 
 function setupTouch () {
 
-    window.addEventListener( "pointermove", 
-       onPointer
-        );
-        window.addEventListener ( "pointerdown", onPointer);
-    
-    window.addEventListener( "pointerup", 
-       onClick
-        );
+    window.addEventListener( "pointermove", onPointer );
+    window.addEventListener ( "pointerdown", onPointer);
+    window.addEventListener( "pointerup", onClick );
 
 }
 
