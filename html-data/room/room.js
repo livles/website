@@ -22,8 +22,13 @@ const modals = {
 const sounds = {
     night: new Audio ( "./sounds/chinese_drums.mp3" ),
     // day: new Audio ( "./sounds/classical_chinese_music.mp3" ),
-    day: new Audio ( "./sounds/lagoon.mp3" ),
+    day: new Audio ( "january-336894.mp3" ),
     hover: new Audio ( "./sounds/pop.mp3" ) 
+}
+
+const background_colors = {
+    day : new THREE.Color ( 0x220000 ),
+    night : new THREE.Color ( 0x0 )
 }
 
 let backgroundMusic = sounds.day;
@@ -44,7 +49,7 @@ function setupScene() {
     
     scene = new THREE.Scene();
     scene.castShadow = true;
-    scene.background = new THREE.Color( 0x999999 );
+    scene.background = background_colors.day;
     
     
 }
@@ -58,7 +63,7 @@ function setupControls() {
 
 function setupLight() {
     
-    const redlight = new THREE.PointLight( 0xff0000,2, 5, 1);
+    const redlight = new THREE.PointLight( 0xff0000,2, 5, );
     redlight.position.set( 3, 3, 1 );
     scene.add( redlight );
     const greenlight = new THREE.PointLight( 0xffff,2, 5, 1);
@@ -80,20 +85,26 @@ function setupLight() {
     scene.add(ambientLight);
 }
 
+let children
 async function load3DModel() {
     
     const loader = new GLTFLoader();
-    const gltf = await loader.loadAsync( 'room2.glb' );
-
+    const gltf = await loader.loadAsync( './room_blossom.glb' );
+    
     const model = gltf.scene;
-    scene.add( model );   
+
+    const skybox = await loader.loadAsync( 'free_-_skybox_fairy_forest_day.glb' );
+    
+    const skybox_model = skybox.scene;
+    scene.add( model ); 
+    scene.add( skybox_model );
 
 
-    const children  = scene.children[6].children;
+    children  = scene.children[6].children;
     children.forEach((element) => {
         if ( element.name.includes("Raycaster") ) {
-            if (element.name.includes("schild") || element.name.includes("switch")) {
-                element = element.children[0];
+            if (element.name.includes("NLP")) {
+                element = element.children[0]
             }
             element.userData.initialRotation = new THREE.Vector3().copy(element.rotation);
             element.userData.initialPosition= new THREE.Vector3().copy(element.position);
@@ -301,8 +312,9 @@ function onPointer( event ) {
         return;
     }
     
-    intersects = raycaster.intersectObjects( scene.children[6].children );
+    intersects = raycaster.intersectObjects( children );
     
+    console.log(intersects)
     if ( intersects.length && intersects[0].object.name.includes("Raycaster")  ) {
             document.body.style.cursor = "pointer";
             intersectRayObject = intersects[0].object;
@@ -361,13 +373,13 @@ function onClick () {
                 
                 lighton = false;
                 renderer.toneMappingExposure = Math.pow(2, exposureLow);
-                scene.background = new THREE.Color( 0 );
+                scene.background = background_colors.night; 
                 handleMusic ();
                 startClickAnimation(intersectRayObject);
             } else {
                 lighton = true;
                 renderer.toneMappingExposure = Math.pow(2,exposureHigh);
-                scene.background = new THREE.Color( 0x999999 );
+                scene.background = background_colors.day;
                 handleMusic();
                 endClickAnimation (intersectRayObject);
             }
