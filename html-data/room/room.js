@@ -30,7 +30,7 @@ function setupScene() {
     renderer.setAnimationLoop(animate);
     document.body.appendChild(renderer.domElement);
     
-    camera = new THREE.PerspectiveCamera(15,window.innerWidth / window.innerHeight,0.1,1000);
+    camera = new THREE.PerspectiveCamera(10,window.innerWidth / window.innerHeight,0.1,1000);
     camera.position.set(-30, 0, 30);
     
     scene = new THREE.Scene();
